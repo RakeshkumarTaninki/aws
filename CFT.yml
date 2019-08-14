@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Template to create a lambda funtion and API gateway endpoint'
+
+Resources:
+  HelloWorldLambdFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: helloWorldLambdFunction
+      Handler: index.hello
+      Runtime: python3.6
+      Role: !Ref LambdaBasicExecutionRole
+      Tags:
+        - Key: Name
+          Value: Resource created by AWS Cloud Formation Template.
+      Code:
+        Zipfile: |
+          def hello(event, context):
+            return "Hello World, I was created using AWS Cloud Formation."
+      
+  LambdaBasicExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+          Condition: {}
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
